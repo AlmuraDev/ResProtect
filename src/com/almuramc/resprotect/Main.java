@@ -110,6 +110,7 @@ public class Main extends JavaPlugin {
 			FlagPermissions.addFlag("mo-aquatic");
 			FlagPermissions.addFlag("mo-monsters");
 			FlagPermissions.addFlag("mo-passive");
+			FlagPermissions.addFlag("thaumcraft-monsters");
 		}
 	}
 }

@@ -39,12 +39,12 @@ public class ChatListener implements Listener {
 	// Chat Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if (event.isCancelled()) {			
+		if (event.isCancelled()) {
 			return;
 		}
 		ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
 		if (res != null) {
-			if (res.getPermissions().playerHas(event.getPlayer().getName(),"chat", true)) {				
+			if (res.getPermissions().playerHas(event.getPlayer().getName(),"chat", true)) {
 				return;
 			}
 			if (!res.getPermissions().has("chat", true)) {

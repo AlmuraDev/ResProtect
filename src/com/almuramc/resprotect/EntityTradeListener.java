@@ -42,9 +42,9 @@ public class EntityTradeListener implements Listener {
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
 		if(event.isCancelled())
 			return;
-		Entity npc = event.getRightClicked();	
-		if(npc.getType() == EntityType.VILLAGER){			
-			ClaimedResidence res = Residence.getResidenceManager().getByLoc(npc.getLocation());		
+		Entity npc = event.getRightClicked();
+		if(npc.getType() == EntityType.VILLAGER){
+			ClaimedResidence res = Residence.getResidenceManager().getByLoc(npc.getLocation());
 			if (res != null) {
 				if(!res.getPermissions().playerHas(event.getPlayer().getName(), "npctrade", true)) {
 					event.getPlayer().sendMessage(ChatColor.GREEN + "[ResProtect]" + ChatColor.WHITE + " You are not allowed to trade with Villagers here.");
@@ -53,5 +53,4 @@ public class EntityTradeListener implements Listener {
 			}
 		}
 	}
-
 }

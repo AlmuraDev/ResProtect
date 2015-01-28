@@ -26,40 +26,9 @@
  */
 package com.almuramc.resprotect;
 
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.CaveSpider;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Cow;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Ghast;
-import org.bukkit.entity.Giant;
-import org.bukkit.entity.Golem;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.MagmaCube;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Silverfish;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Snowman;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Squid;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Witch;
-import org.bukkit.entity.Wither;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.bekvon.bukkit.residence.Residence;
@@ -83,8 +52,8 @@ public class EntityTargetListener implements Listener {
 
 		FlagPermissions perms = Residence.getPermsByLoc(event.getTarget().getLocation());
 		
-		if (perms != null) {				
-			if(perms.has("safezone", true)){			
+		if (perms != null) {
+			if(perms.has("safezone", true)){
 				event.setCancelled(true);
 			}
 		}

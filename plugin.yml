@@ -1,5 +1,5 @@
 name: ResProtect
 main: com.almuramc.resprotect.Main
 authors: [Dockter]
-version: 0.8
+version: 1.2
 depend: [Residence]

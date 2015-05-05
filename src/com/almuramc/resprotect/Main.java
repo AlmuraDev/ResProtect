@@ -58,6 +58,8 @@ public class Main extends JavaPlugin {
 		config.addDefault("EnableTargetListener", true);
 		config.addDefault("EnableForgeHooks", false);
 		config.addDefault("EnableMoCreaturesHooks", false);
+		config.addDefault("EnableThaumcraftHooks", false);
+		config.addDefault("EnableTConstructHooks", false);
 		config.options().copyDefaults(true);
 		saveConfig();
 
@@ -81,6 +83,7 @@ public class Main extends JavaPlugin {
 			pm.registerEvents(new EntityDamageListener(), this);
 			pm.registerEvents(new EntitySpawnListener(), this);
 			pm.registerEvents(new EntityTradeListener(), this);
+			pm.registerEvents(new EntityListener(), this);
 			pm.registerEvents(new SoilListener(), this);
 			registerFlags();
 			log.info("All ResProtect Flags added to residence.");
@@ -105,12 +108,20 @@ public class Main extends JavaPlugin {
 		FlagPermissions.addFlag("fly");
 		FlagPermissions.addFlag("soil");
 		FlagPermissions.addFlag("safezone");
+
 		if (config.getBoolean("EnableMoCreaturesHooks")) {
 			FlagPermissions.addFlag("mo-ambient");
 			FlagPermissions.addFlag("mo-aquatic");
 			FlagPermissions.addFlag("mo-monsters");
 			FlagPermissions.addFlag("mo-passive");
+		}
+
+		if (config.getBoolean("EnableThaumcraftHooks")) {
 			FlagPermissions.addFlag("thaumcraft-monsters");
+		}
+
+		if (config.getBoolean("EnableTConstructHooks")) {
+		    FlagPermissions.addFlag("tconstruct-monsters");		
 		}
 	}
 }

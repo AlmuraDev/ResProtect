@@ -3,12 +3,28 @@ package com.almuramc.resprotect;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 public class PlayerInteractListener implements Listener {
+    
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        System.out.println("I got here within sign change event");
+        if (event.getBlock() != null) {
+            ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getBlock().getLocation());
+            if (res != null) {
+                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"build", true)) { 
+                    System.out.println("Should have cancelled sign update");
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
+    }
     
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {

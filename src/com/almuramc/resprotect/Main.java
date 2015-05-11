@@ -78,6 +78,7 @@ public class Main extends JavaPlugin {
 				pm.registerEvents(new EntityTargetListener(), this);
 			}
 			pm.registerEvents(new PortalListener(), this);
+			pm.registerEvents(new PlayerInteractListener(), this);
 			pm.registerEvents(new EggHatchListener(), this);
 			pm.registerEvents(new ShearListener(), this);
 			pm.registerEvents(new EntityDamageListener(), this);

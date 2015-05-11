@@ -10,25 +10,23 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 public class PlayerInteractListener implements Listener {
-    
+
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        System.out.println("I got here within sign change event");
         if (event.getBlock() != null) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getBlock().getLocation());
             if (res != null) {
-                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"build", true)) { 
-                    System.out.println("Should have cancelled sign update");
+                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"build", true)) {
                     event.setCancelled(true);
                     return;
                 }
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        
+
         // Bibliocraft Signs
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOFANCYSIGN")) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
@@ -39,7 +37,7 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
-        
+
         // Railcraft Machines
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("RAILCRAFT_MACHINEGAMMA")) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
@@ -50,7 +48,7 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
-        
+
         // Thermal Expansion Machines
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_MACHINE")) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
@@ -61,7 +59,7 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
-        
+
         // IC2 Block Machines
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKMACHINE")) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
@@ -72,7 +70,7 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
-        
+
         // IC2 Block Generators
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKGENERATOR")) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());

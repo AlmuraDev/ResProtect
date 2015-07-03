@@ -48,7 +48,7 @@ public class EntityListener implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event) {
-        if (event.getRightClicked().getType().getName().equalsIgnoreCase("MinecartRideable")) {
+        if ("MinecartRideable".equalsIgnoreCase(event.getRightClicked().getType().getName())) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getRightClicked().getLocation());
             if (res != null) {
                 if (!res.getPermissions().playerHas(event.getPlayer().getName(),"container", true)) {             

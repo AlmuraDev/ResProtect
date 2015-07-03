@@ -59,6 +59,17 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         }
+        
+     // Thermal Expansion Machines
+        if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_CACHE")) {
+            ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
+            if (res != null) {
+                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"container", true)) {             
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
 
         // IC2 Block Machines
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKMACHINE")) {

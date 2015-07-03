@@ -151,9 +151,19 @@ public class EntitySpawnListener implements Listener {
                     }
                 }
             }
+            
+            // Thermal Foundation
+            if (config.getBoolean("EnableTFHooks")) {
+                if (entityName.equalsIgnoreCase("ThermalFoundation-Blizz")) {
+                    found = true;
+                    if(!perms.has("tf-monsters", true)) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
         }
         if (!(found)) {
-            System.out.println("Cancelled: " + event.isCancelled() + " Name: " + event.getEntity().toString() + " Class: " + event.getEntity().getClass());
+            System.out.println("[ResProtect]: Didn't catch the following spawn event - " + event.isCancelled() + "Name: [" + event.getEntity().toString() + "] - Class: [" + event.getEntity().getClass() + "]");
         }
     }
 }

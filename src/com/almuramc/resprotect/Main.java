@@ -60,6 +60,7 @@ public class Main extends JavaPlugin {
 		config.addDefault("EnableMoCreaturesHooks", false);
 		config.addDefault("EnableThaumcraftHooks", false);
 		config.addDefault("EnableTConstructHooks", false);
+		config.addDefault("EnableTFHooks", false);
 		config.options().copyDefaults(true);
 		saveConfig();
 
@@ -124,5 +125,9 @@ public class Main extends JavaPlugin {
 		if (config.getBoolean("EnableTConstructHooks")) {
 		    FlagPermissions.addFlag("tconstruct-monsters");		
 		}
+		
+		if (config.getBoolean("EnableTFHooks")) {
+            FlagPermissions.addFlag("tf-monsters");     
+        }
 	}
 }

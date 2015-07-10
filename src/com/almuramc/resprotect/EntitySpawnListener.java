@@ -154,7 +154,7 @@ public class EntitySpawnListener implements Listener {
             
             // Thermal Foundation
             if (config.getBoolean("EnableTFHooks")) {
-                if (entityName.equalsIgnoreCase("ThermalFoundation-Blizz")) {
+                if (entityName.equalsIgnoreCase("ThermalFoundation-Blitz") || entityName.equalsIgnoreCase("ThermalFoundation-Basalz")) {
                     found = true;
                     if(!perms.has("tf-monsters", true)) {
                         event.setCancelled(true);

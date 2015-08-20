@@ -94,6 +94,15 @@ public class EntitySpawnListener implements Listener {
         // The following class instance lookups are specifically for MoCreatures
         if (config.getBoolean("EnableForgeHooks")) {
             String entityName = event.getEntity().toString();
+            
+            // Prevents Traveling Chest spawn in Othala.
+            if (entityName.equalsIgnoreCase("Thaumcraft-TravelingTrunk") && event.getEntity().getWorld().getName().equalsIgnoreCase("Othala")) {
+                System.out.println("[ResProect] - Prevented Thaumcraft Chest entity from Spawning in Othala");
+                found = true;
+                event.setCancelled(true);
+                return;
+            }
+                    
             if (config.getBoolean("EnableMoCreaturesHooks")) {                
                 // Ambient
                 if (entityName.equalsIgnoreCase("MoCreatures-Ant") || entityName.equalsIgnoreCase("MoCreatures-Bee") || entityName.equalsIgnoreCase("MoCreatures-Butterfly") || entityName.equalsIgnoreCase("MoCreatures-Crab") || entityName.equalsIgnoreCase("MoCreatures-Cricket") || entityName.equalsIgnoreCase("MoCreatures-Dragonfly") || entityName.equalsIgnoreCase("MoCreatures-Fly") || entityName.equalsIgnoreCase("MoCreatures-Maggot") || entityName.equalsIgnoreCase("MoCreatures-Roach") || entityName.equalsIgnoreCase("MoCreatures-Snail") ) {				

@@ -364,6 +364,20 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
         }
+        
+        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_CRAFTINGSTATION")) {
+            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+        
+        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_CRAFTINGSLAB")) {
+            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         if (event.getClickedBlock().getType() == Material.getMaterial("CARPENTERSBLOCKS_BLOCKCARPENTERSAFE")) {
             if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {

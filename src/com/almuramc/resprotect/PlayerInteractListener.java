@@ -421,6 +421,13 @@ public class PlayerInteractListener implements Listener {
             }
         }
         
+        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_ITEMDOOR_DARK_OAK")) {
+            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+        
         if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_ITEMSHOJI_DOOR")) {
             if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
                 event.setCancelled(true);

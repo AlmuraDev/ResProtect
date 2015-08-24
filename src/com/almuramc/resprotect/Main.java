@@ -87,6 +87,7 @@ public class Main extends JavaPlugin {
 			pm.registerEvents(new EntityTradeListener(), this);
 			pm.registerEvents(new EntityListener(), this);
 			pm.registerEvents(new SoilListener(), this);
+			pm.registerEvents(new PlayerEntityInteractListener(), this);
 			registerFlags();
 			log.info("All ResProtect Flags added to residence.");
 
@@ -110,6 +111,7 @@ public class Main extends JavaPlugin {
 		FlagPermissions.addFlag("fly");
 		FlagPermissions.addFlag("soil");
 		FlagPermissions.addFlag("safezone");
+		FlagPermissions.addFlag("itemframe");
 
 		if (config.getBoolean("EnableMoCreaturesHooks")) {
 			FlagPermissions.addFlag("mo-ambient");

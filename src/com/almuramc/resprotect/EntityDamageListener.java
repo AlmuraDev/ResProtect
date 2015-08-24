@@ -46,7 +46,8 @@ public class EntityDamageListener implements Listener {
     
     @EventHandler(priority = EventPriority.NORMAL)
 	public void onEntityDamage(EntityDamageEvent event) {
-		if (event.isCancelled()) {
+		//System.out.println("entity Damage: " + event.getEntity());
+        if (event.isCancelled()) {
 			return;
 		}
 		

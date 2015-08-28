@@ -1,16 +1,11 @@
 package com.almuramc.resprotect;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftItemFrame;
-
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.entity.EntityDamageEvent;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.event.Listener;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;

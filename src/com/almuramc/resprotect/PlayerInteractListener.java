@@ -15,16 +15,9 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent event) {        
-        if (event.getBlock() == null) {
-            return;
-        }
-
+        if (event.getBlock() == null) return;
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getBlock().getLocation(), event.getPlayer());
-
-        if (perms == null) {
-            return;
-        }
-
+        if (perms == null) return;        
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
             event.setCancelled(true);
             return;
@@ -45,122 +38,50 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 
         if (event.getPlayer().getItemInHand() != null) {
-
             FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
-
             if (res != null && perms != null) {
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("THERMALEXPANSION_FLORB")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "destroy", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("BUILDCRAFTENERGY_BUCKETOIL")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("THAUMCRAFT_ITEMBUCKETDEATH")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("THAUMCRAFT_ITEMBUCKETPURE")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("RAILCRAFT_FLUIDCREOSOTEBUCKET")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETSEWAGE")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETESSENCE")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETMEAT")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETSEWAGE")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETPINKSLIME")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETCHOCOLATEMILK")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETMUSHROOMSOUP")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETBIOFUEL")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("MINEFACTORYRELOADED_BUCKETSLUDGE")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("THERMALFOUNDATION_BUCKET")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-                }
-
-                if (event.getPlayer().getItemInHand().getType() == Material.getMaterial("TCONSTRUCT_BUCKETS")) {
-                    if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
-                        event.setCancelled(true);
-                    }
-                    return;
+                switch (event.getPlayer().getItemInHand().getType().name().toUpperCase()) {
+                    // PVP
+                    case "THAUMCRAFT_WANDCASTING":
+                        if (!res.getPermissions().has("pvp", true)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    break;
+                    // Destroy
+                    case "THERMALEXPANSION_CHILLER":
+                    case "THERMALEXPANSION_IGNITER":
+                    case "THERMALEXPANSION_WRENCH":
+                    case "IC2_ITEMTOOLMININGLASER":
+                    case "IC2_ITEMDYNAMITE":
+                    case "IC2_ITEMREMOTE":
+                    case "THERMALEXPANSION_FLORB":
+                        if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "destroy", true)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    break;
+                    // Bucket
+                    case "BUILDCRAFTENERGY_BUCKETOIL":
+                    case "THAUMCRAFT_ITEMBUCKETDEATH":
+                    case "THAUMCRAFT_ITEMBUCKETPURE":
+                    case "RAILCRAFT_FLUIDCREOSOTEBUCKET":
+                    case "MINEFACTORYRELOADED_BUCKETSEWAGE":
+                    case "MINEFACTORYRELOADED_BUCKETESSENCE":
+                    case "MINEFACTORYRELOADED_BUCKETMEAT":
+                    case "MINEFACTORYRELOADED_BUCKETPINKSLIME":
+                    case "MINEFACTORYRELOADED_BUCKETCHOCOLATEMILK":
+                    case "MINEFACTORYRELOADED_BUCKETMUSHROOMSOUP":
+                    case "MINEFACTORYRELOADED_BUCKETBIOFUEL":
+                    case "MINEFACTORYRELOADED_BUCKETSLUDGE":
+                    case "THERMALFOUNDATION_BUCKET":
+                    case "TCONSTRUCT_BUCKETS":
+                        if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    break;
                 }
             }
         }
@@ -173,297 +94,82 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        if (event.getClickedBlock() == null) return;        
-
+        if (event.getClickedBlock() == null) return;
         // Tesseract Block within Othala.
         if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_TESSERACT") && event.getClickedBlock().getWorld().getName().equalsIgnoreCase("Othala")) {
             event.setCancelled(true);
             System.out.println("[ResProtect] - Blocked Tesseract from: " + event.getPlayer().getName() + " in world: " + event.getPlayer().getWorld().getName());
         }
-
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getClickedBlock().getLocation(), event.getPlayer());
         ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
-
-        if (res == null || perms == null) return;        
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOFANCYSIGN")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOTABLE")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOCASE")) {      
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIORACK")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOSHELF")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_ARMOR_STAND")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOSWORDPEDESTAL")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("BIBLIOCRAFT_BIBLIOLABEL")) {            
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("RAILCRAFT_MACHINEGAMMA")) {           
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {             
-                event.setCancelled(true);
-                return;
-            }           
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("RAILCRAFT_MACHINEALPHA")) {           
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {             
-                event.setCancelled(true);
-                return;
-            }           
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("RAILCRAFT_MACHINEBETA")) {           
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {             
-                event.setCancelled(true);
-                return;
-            }           
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_CELL")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_MACHINE")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_TANK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_STRONGBOX")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THERMALEXPANSION_CACHE")) {                        
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("THAUMCRAFT_BLOCKTABLE")) {                        
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKMACHINE")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKMACHINE2")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKGENERATOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("IC2_BLOCKKINETICGENERATOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_SMELTERY")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_ARMORDRYINGRACK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_TOOLSTATIONBLOCK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_LAVATANK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_SEAREDBLOCK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_CRAFTINGSTATION")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("TCONSTRUCT_CRAFTINGSLAB")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("CARPENTERSBLOCKS_BLOCKCARPENTERSAFE")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_SALOON")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_DOOR_ACACIA")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_DOOR_JUNGLE")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_DOOR_BIRCH")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_DOOR_SPRUCE")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_DOOR_DARK_OAK")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_SHOJI_DOOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_WOOD_SLIDING_DOOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_FACTORY_DOOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_SLIDING_TRAPDOOR")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
-        }
-
-        if (event.getClickedBlock().getType() == Material.getMaterial("MALISISDOORS_CURTAIN")) {
-            if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
-                event.setCancelled(true);
-                return;
-            }
+        if (res == null || perms == null) return;
+        switch (event.getClickedBlock().getType().name().toUpperCase()) {
+            // Build
+            case "BIBLIOCRAFT_BIBLIOFANCYSIGN":
+                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            break;
+            // Container
+            case "ALMURA_STORAGEBIRCH_STORAGE_CRATE":
+            case "ALMURA_STORAGEDARK_OAK_STORAGE_CRATE":
+            case "ALMURA_STORAGEDOCK_CHEST":
+            case "ALMURA_STORAGEQUANTUM_CHEST":
+            case "ALMURA_STORAGEOAK_STORAGE_CRATE":
+            case "ALMURA_STORAGESPRUCE_STORAGE_CRATE":
+            case "BIBLIOCRAFT_BIBLIOTABLE":
+            case "BIBLIOCRAFT_BIBLIOCASE":
+            case "BIBLIOCRAFT_BIBLIORACK":
+            case "BIBLIOCRAFT_BIBLIOSHELF":
+            case "BIBLIOCRAFT_ARMOR_STAND":
+            case "BIBLIOCRAFT_BIBLIOSWORDPEDESTAL":
+            case "BIBLIOCRAFT_BIBLIOLABEL":
+            case "RAILCRAFT_MACHINEGAMMA": 
+            case "RAILCRAFT_MACHINEALPHA":
+            case "RAILCRAFT_MACHINEBETA":
+            case "THERMALEXPANSION_CELL":
+            case "THERMALEXPANSION_MACHINE":
+            case "THERMALEXPANSION_TANK":
+            case "THERMALEXPANSION_STRONGBOX":
+            case "THERMALEXPANSION_CACHE":
+            case "THAUMCRAFT_BLOCKTABLE":
+            case "IC2_BLOCKMACHINE":
+            case "IC2_BLOCKMACHINE2":
+            case "IC2_BLOCKGENERATOR":
+            case "IC2_BLOCKKINETICGENERATOR":
+            case "TCONSTRUCT_SMELTERY":
+            case "TCONSTRUCT_ARMORDRYINGRACK":
+            case "TCONSTRUCT_TOOLSTATIONBLOCK":
+            case "TCONSTRUCT_LAVATANK":
+            case "TCONSTRUCT_SEAREDBLOCK":
+            case "TCONSTRUCT_CRAFTINGSTATION":
+            case "TCONSTRUCT_CRAFTINGSLAB":
+            case "CARPENTERSBLOCKS_BLOCKCARPENTERSAFE":
+            case "THAUMCRAFT_BLOCKJAR":
+                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
+                    event.setCancelled(true);
+                    return;
+                    
+                }
+                break;
+            // Doors
+            case "MALISISDOORS_SALOON":
+            case "MALISISDOORS_DOOR_ACACIA":
+            case "MALISISDOORS_DOOR_JUNGLE":
+            case "MALISISDOORS_DOOR_BIRCH":
+            case "MALISISDOORS_DOOR_SPRUCE":
+            case "MALISISDOORS_DOOR_DARK_OAK":
+            case "MALISISDOORS_SHOJI_DOOR":
+            case "MALISISDOORS_WOOD_SLIDING_DOOR":
+            case "MALISISDOORS_FACTORY_DOOR":
+            case "MALISISDOORS_SLIDING_TRAPDOOR":
+            case "MALISISDOORS_CURTAIN":
+                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
+                    event.setCancelled(true);
+                    return;
+                }
+            break;
         }
     }
 }

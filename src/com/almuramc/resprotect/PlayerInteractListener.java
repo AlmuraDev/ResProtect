@@ -1,19 +1,21 @@
 package com.almuramc.resprotect;
 
+import org.bukkit.event.EventPriority;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 
 public class PlayerInteractListener implements Listener {
+    
+    boolean debug = true;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {        
         if (event.getBlock() == null) return;
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getBlock().getLocation(), event.getPlayer());
@@ -24,7 +26,7 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {    
         // Prevents Tesseract from being placed in Othala.
         if (!event.getBlockPlaced().getWorld().getName().equalsIgnoreCase("Othala")) return;        
@@ -34,12 +36,14 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH) // Do not use ignoreCancelled = true because Forge cancels click air events by default, how stupid.
     public void onPlayerInteract(PlayerInteractEvent event) {
-
         if (event.getPlayer().getItemInHand() != null) {
+
             FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
+            boolean hasPermission = false;
+            
             if (res != null && perms != null) {
                 switch (event.getPlayer().getItemInHand().getType().name().toUpperCase()) {
                     // PVP
@@ -49,20 +53,48 @@ public class PlayerInteractListener implements Listener {
                             return;
                         }
                     break;
-                    // Destroy
-                    case "THERMALEXPANSION_CHILLER":
-                    case "THERMALEXPANSION_IGNITER":
-                    case "THERMALEXPANSION_WRENCH":
+                    // Build / Place
+                    case "BUILDCRAFTTRANSPORT_PIPEPLUG":
+                    case "BUILDCRAFTTRANSPORT_PIPEGATE":
+                    case "BUILDCRAFTTRANSPORT_PIPEFACADE":
+                    case "BUILDCRAFT_WRENCHITEM":
                     case "IC2_ITEMTOOLMININGLASER":
                     case "IC2_ITEMDYNAMITE":
                     case "IC2_ITEMREMOTE":
+                    case "IC2_ITEMTOOLWRENCH":
+                    case "IC2_PLASMALAUNCHER":
+                    case "IC2_ITEMTOOLPAINTER":
+                    case "IC2_ITEMTOOLPAINTERBLACK":
+                    case "IC2_ITEMTOOLPAINTERRED":
+                    case "IC2_ITEMTOOLPAINTERGREEN":
+                    case "IC2_ITEMTOOLPAINTERBROWN":
+                    case "IC2_ITEMTOOLPAINTERBLUE":
+                    case "IC2_ITEMTOOLPAINTERPURPLE":
+                    case "IC2_ITEMTOOLPAINTERCYAN":
+                    case "IC2_ITEMTOOLPAINTERLIGHTGREY":
+                    case "IC2_ITEMTOOLPAINTERDARKGREY":
+                    case "IC2_ITEMTOOLPAINTERPINK":
+                    case "IC2_ITEMTOOLPAINTERLIME":
+                    case "IC2_ITEMTOOLPAINTERYELLOW":
+                    case "IC2_ITEMTOOLPAINTERCLOUD":
+                    case "IC2_ITEMTOOLPAINTERMAGENTA":
+                    case "IC2_ITEMTOOLPAINTERORANGE":
+                    case "IC2_ITEMTOOLPAINTERWHITE":
+                    case "MINEFACTORYRELOADED_SAFARINETREUSABLE":
+                    case "MINEFACTORYRELOADED_SAFARINETSINGLEUSE":
+                    case "THERMALEXPANSION_CHILLER":
+                    case "THERMALEXPANSION_IGNITER":
+                    case "THERMALEXPANSION_WRENCH":
                     case "THERMALEXPANSION_FLORB":
-                        if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "destroy", true)) {
+                        hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "place", perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true));
+                        System.out.println("Laser Detected for Player: " + event.getPlayer().getName() + " hasPermission: " + hasPermission);
+                        if (!hasPermission) {
                             event.setCancelled(true);
                             return;
                         }
                     break;
                     // Bucket
+                    case "BUCKET":
                     case "BUILDCRAFTENERGY_BUCKETOIL":
                     case "THAUMCRAFT_ITEMBUCKETDEATH":
                     case "THAUMCRAFT_ITEMBUCKETPURE":
@@ -77,7 +109,8 @@ public class PlayerInteractListener implements Listener {
                     case "MINEFACTORYRELOADED_BUCKETSLUDGE":
                     case "THERMALFOUNDATION_BUCKET":
                     case "TCONSTRUCT_BUCKETS":
-                        if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true)) {
+                        hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true);
+                        if (!hasPermission) {
                             event.setCancelled(true);
                             return;
                         }
@@ -102,11 +135,13 @@ public class PlayerInteractListener implements Listener {
         }
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getClickedBlock().getLocation(), event.getPlayer());
         ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
+        boolean hasPermission = false;
         if (res == null || perms == null) return;
         switch (event.getClickedBlock().getType().name().toUpperCase()) {
             // Build
             case "BIBLIOCRAFT_BIBLIOFANCYSIGN":
-                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
+                hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "place", perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true));
+                if (!hasPermission) {
                     event.setCancelled(true);
                     return;
                 }
@@ -134,6 +169,7 @@ public class PlayerInteractListener implements Listener {
             case "THERMALEXPANSION_STRONGBOX":
             case "THERMALEXPANSION_CACHE":
             case "THAUMCRAFT_BLOCKTABLE":
+            case "THAUMCRAFT_BLOCKSTONEDEVICE":
             case "IC2_BLOCKMACHINE":
             case "IC2_BLOCKMACHINE2":
             case "IC2_BLOCKGENERATOR":
@@ -147,10 +183,10 @@ public class PlayerInteractListener implements Listener {
             case "TCONSTRUCT_CRAFTINGSLAB":
             case "CARPENTERSBLOCKS_BLOCKCARPENTERSAFE":
             case "THAUMCRAFT_BLOCKJAR":
-                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true)) {
+                hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true);
+                if (!hasPermission) {
                     event.setCancelled(true);
                     return;
-                    
                 }
                 break;
             // Doors
@@ -165,7 +201,8 @@ public class PlayerInteractListener implements Listener {
             case "MALISISDOORS_FACTORY_DOOR":
             case "MALISISDOORS_SLIDING_TRAPDOOR":
             case "MALISISDOORS_CURTAIN":
-                if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true)) {
+                hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true);
+                if (!hasPermission) {
                     event.setCancelled(true);
                     return;
                 }

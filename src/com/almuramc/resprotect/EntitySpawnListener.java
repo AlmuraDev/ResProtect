@@ -143,7 +143,7 @@ public class EntitySpawnListener implements Listener {
 
             // Thaumcraft
             if (config.getBoolean("EnableThaumcraftHooks")) {                
-                if (entityName.equalsIgnoreCase("Thaumcraft-Pech") || entityName.equalsIgnoreCase("CraftFlying") || entityName.equalsIgnoreCase("Thaumcraft-EldritchGuardian") || entityName.equalsIgnoreCase("Thaumcraft-Firebat")) {
+                if (entityName.equalsIgnoreCase("Thaumcraft-Pech") || entityName.equalsIgnoreCase("CraftFlying") || entityName.equalsIgnoreCase("Thaumcraft-EldritchGuardian") || entityName.equalsIgnoreCase("Thaumcraft-Firebat") || entityName.equalsIgnoreCase("Thaumcraft-TaintacleTiny") || entityName.equalsIgnoreCase("Thaumcraft-TaintSpore") || entityName.equalsIgnoreCase("Thaumcraft-TaintSwarm") || entityName.equalsIgnoreCase("Thaumcraft-TaintSwarmer")) {
                     found = true;
                     if(!perms.has("thaumcraft-monsters", true)) {
                         event.setCancelled(true);

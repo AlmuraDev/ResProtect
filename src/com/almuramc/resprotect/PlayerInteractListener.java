@@ -46,13 +46,6 @@ public class PlayerInteractListener implements Listener {
             
             if (res != null && perms != null) {
                 switch (event.getPlayer().getItemInHand().getType().name().toUpperCase()) {
-                    // PVP
-                    case "THAUMCRAFT_WANDCASTING":
-                        if (!res.getPermissions().has("pvp", true)) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    break;
                     // Build / Place
                     case "BUILDCRAFTTRANSPORT_PIPEPLUG":
                     case "BUILDCRAFTTRANSPORT_PIPEGATE":
@@ -86,8 +79,8 @@ public class PlayerInteractListener implements Listener {
                     case "THERMALEXPANSION_IGNITER":
                     case "THERMALEXPANSION_WRENCH":
                     case "THERMALEXPANSION_FLORB":
+                    case "THAUMCRAFT_WANDCASTING":
                         hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "place", perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true));
-                        System.out.println("Laser Detected for Player: " + event.getPlayer().getName() + " hasPermission: " + hasPermission);
                         if (!hasPermission) {
                             event.setCancelled(true);
                             return;

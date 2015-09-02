@@ -47,7 +47,7 @@ public class EntityTradeListener implements Listener {
 			ClaimedResidence res = Residence.getResidenceManager().getByLoc(npc.getLocation());
 			if (res != null) {
 				if(!res.getPermissions().playerHas(event.getPlayer().getName(), "npctrade", true)) {
-					event.getPlayer().sendMessage(ChatColor.GREEN + "[ResProtect]" + ChatColor.WHITE + " You are not allowed to trade with Villagers here.");
+				    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [NPCTrade] residence flag permission required.");
 					event.setCancelled(true);
 				}
 			}

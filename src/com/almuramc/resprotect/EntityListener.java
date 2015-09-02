@@ -39,7 +39,7 @@ public class EntityListener implements Listener {
                 if (res.getPermissions().playerHas(player.getName(), "admin", true)) {
                     return;
                 }
-                player.sendMessage(ChatColor.RED + "Flying is not allowed here.");
+                player.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Fly] residence flag permission required.");
                 player.setFlying(false);
             }
         }
@@ -53,6 +53,7 @@ public class EntityListener implements Listener {
             if (res != null) {
                 if (!res.getPermissions().playerHas(event.getPlayer().getName(),"container", true)) {             
                     event.setCancelled(true);
+                    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Container] residence flag permission required.");
                     return;
                 }
             }

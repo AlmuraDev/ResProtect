@@ -50,12 +50,12 @@ public class ShearListener implements Listener {
 				return;
 			}
 			if (!res.getPermissions().has("shear", true)) {
-				event.getPlayer().sendMessage(ChatColor.GREEN + "[ResProtect]" + ChatColor.WHITE + " You are not allowed to Shear Sheep here.");
+			    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Shear] residence flag permission required.");
 				event.setCancelled(true);
 			}
 
 		} else if (!Residence.getWorldFlags().getPerms(event.getPlayer().getWorld().getName()).has("shear", true)) {
-			event.getPlayer().sendMessage(ChatColor.GREEN + "[ResProtect]" + ChatColor.WHITE + " You are not allowed to Shear Sheep in current World.");
+		    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Shear] residence flag permission required.");
 			event.setCancelled(true);
 		}
 	}

@@ -81,18 +81,11 @@ public class EntityDamageListener implements Listener {
 						Player attacker = null;
 						if (damager instanceof Player) {
 							attacker = (Player) damager;
-							attacker.sendMessage(ChatColor.GREEN
-									+ "[ResProtect]"
-									+ ChatColor.WHITE
-									+ " You are not allowed to harm Villagers here.");
+							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
 						} else {
 							if (damager instanceof Arrow)
-								attacker = (Player) ((Arrow) damager)
-								.getShooter();
-							attacker.sendMessage(ChatColor.GREEN
-									+ "[ResProtect]"
-									+ ChatColor.WHITE
-									+ " You are not allowed to harm Villagers here.");
+								attacker = (Player) ((Arrow) damager).getShooter();
+							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
 						}
 						event.setCancelled(true);
 					}
@@ -111,18 +104,12 @@ public class EntityDamageListener implements Listener {
 						Player attacker = null;
 						if (damager instanceof Player) {
 							attacker = (Player) damager;
-							attacker.sendMessage(ChatColor.GREEN
-									+ "[ResProtect]"
-									+ ChatColor.WHITE
-									+ " You are not allowed to to harm Animals here.");
+							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
 						} else {
 							if (damager instanceof Arrow)
 								attacker = (Player) ((Arrow) damager)
 								.getShooter();
-							attacker.sendMessage(ChatColor.GREEN
-									+ "[ResProtect]"
-									+ ChatColor.WHITE
-									+ " You are not allowed to to harm Animals here.");
+							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
 						}
 						event.setCancelled(true);
 					}

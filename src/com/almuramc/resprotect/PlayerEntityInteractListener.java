@@ -1,5 +1,7 @@
 package com.almuramc.resprotect;
 
+import org.bukkit.ChatColor;
+
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -35,7 +37,7 @@ public class PlayerEntityInteractListener implements Listener {
 
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "itemframe", true)) {
             event.setCancelled(true);
-            System.out.println("Blocked Item Frame Interaction.");
+            event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Itemframe] residence flag permission required.");
         }
     }
 
@@ -60,6 +62,7 @@ public class PlayerEntityInteractListener implements Listener {
 
                 if (!perms.playerHas(player.getName(), player.getWorld().getName(), "itemframe", true)) {
                     event.setCancelled(true);
+                    player.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Itemframe] residence flag permission required.");
                 }
             }
         }

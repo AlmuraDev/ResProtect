@@ -1,5 +1,17 @@
 name: ResProtect
 main: com.almuramc.resprotect.Main
 authors: [Dockter]
-version: 1.2
+version: 1.5
 depend: [Residence]
+commands:
+    res-protect:
+        description: The general command of ResProtect
+        aliases: 
+        usage: /res-protect [command] [arguments]
+permissions:
+    resprotect.config:
+        description: reloads configuration
+        default: op
+    resprotect.debug:
+        description: set debugger
+        default: op

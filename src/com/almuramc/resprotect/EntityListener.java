@@ -1,5 +1,12 @@
 package com.almuramc.resprotect;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import org.bukkit.block.Block;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityExplodeEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
@@ -8,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
@@ -58,6 +64,29 @@ public class EntityListener implements Listener {
                 }
             }
         }
-
+    }
+    
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (event.getEntity() == null)
+            return;
+        Boolean cancel = false;
+        if (cancel) {
+            event.setCancelled(true);
+            event.getEntity().remove();
+        } else {
+            List<Block> preserve = new ArrayList<Block>();
+            for (Block block : event.blockList()) {
+                FlagPermissions blockperms = Residence.getPermsByLoc(block.getLocation());
+                if (!blockperms.has("explode", true)) {
+                    if (block != null) {
+                        preserve.add(block);
+                    }
+                }
+            }
+            for (Block block : preserve) {
+                event.blockList().remove(block);
+            }
+        }
     }
 }

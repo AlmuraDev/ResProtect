@@ -26,24 +26,31 @@
  */
 package com.almuramc.resprotect;
 
+import org.bukkit.event.entity.EntityCreatePortalEvent;
+
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.PortalCreateEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 
 public class PortalListener implements Listener {
 
 	// Portal Creation Events
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onPortalCreate(PortalCreateEvent event) {
-		if (event.isCancelled()) {
+	public void onPortalCreate(PortalCreateEvent event) {	    
+	    if (event.isCancelled()) {
 			return;
 		}
-
-		if (!Residence.getWorldFlags().getPerms(event.getWorld().getName()).has("portal", true)) {
-			event.setCancelled(true);
+		
+		ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getBlocks().get(0).getLocation());		
+		
+		if (res != null) {
+		boolean hasPermission = res.getPermissions().has("portal", true);
+            if (!hasPermission) {
+                event.setCancelled(true);                
+            }
 		}
 	}
 }

@@ -26,10 +26,12 @@
  */
 package com.almuramc.resprotect;
 
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,44 +40,33 @@ import com.bekvon.bukkit.residence.protection.FlagPermissions;
 public class Main extends JavaPlugin {
 	private static Main instance;
 	public final Logger log = Logger.getLogger("Minecraft");
-	public Player pdamager;
-	public FileConfiguration config; 
+	public Player pdamager;	
 	public static Main getInstance() {
 		return instance;
 	}
-	
-	
 
 	@Override
 	public void onEnable() {
 		instance = this;
-		FileConfiguration config = this.getConfig();
-		PluginManager pm = Bukkit.getServer().getPluginManager();		
-		config.addDefault("EnableSnowChangeEvents", false);
-		config.addDefault("PreventAllSnowForming", false);
-		config.addDefault("EnableLightningDetection", true);
-		config.addDefault("EnableChatListener", true);
-		config.addDefault("EnableTargetListener", true);
-		config.addDefault("EnableForgeHooks", false);
-		config.addDefault("EnableMoCreaturesHooks", false);
-		config.addDefault("EnableThaumcraftHooks", false);
-		config.addDefault("EnableTConstructHooks", false);
-		config.addDefault("EnableTFHooks", false);
-		config.options().copyDefaults(true);
-		saveConfig();
+		ResProtectConfiguration.reloadConfig();
+		PluginManager pm = Bukkit.getServer().getPluginManager();
 
 		if (pm.isPluginEnabled("Residence")) {
 
-			if ((config.getBoolean("EnableSnowChangeEvents")) || (config.getBoolean("PreventAllSnowForming"))) {
-				pm.registerEvents(new SnowListener(), this);
+			if ((ResProtectConfiguration.config.getBoolean("EnableSnowChangeEvents")) || (ResProtectConfiguration.config.getBoolean("PreventAllSnowForming"))) {
+			    Main.getInstance().getLogger().info("- enabling Snow Listener");
+			    pm.registerEvents(new SnowListener(), this);
 			}
-			if (config.getBoolean("EnableLightningDetection")) {
+			if (ResProtectConfiguration.config.getBoolean("EnableLightningDetection")) {
+			    Main.getInstance().getLogger().info("- enabling Lightning Listener");
 				pm.registerEvents(new LightningListener(), this);
 			}
-			if (config.getBoolean("EnableChatListener")) {
+			if (ResProtectConfiguration.config.getBoolean("EnableChatListener")) {
+			    Main.getInstance().getLogger().info("- enabling Chat Listener");
 				pm.registerEvents(new ChatListener(), this);
 			}
-			if (config.getBoolean("EnableTargetListener")) {
+			if (ResProtectConfiguration.config.getBoolean("EnableTargetListener")) {
+			    Main.getInstance().getLogger().info("- enabling Target Listener");
 				pm.registerEvents(new EntityTargetListener(), this);
 			}
 			pm.registerEvents(new PortalListener(), this);
@@ -87,6 +78,7 @@ public class Main extends JavaPlugin {
 			pm.registerEvents(new EntityTradeListener(), this);
 			pm.registerEvents(new EntityListener(), this);
 			pm.registerEvents(new SoilListener(), this);
+			pm.registerEvents(new InventoryListener(), this);
 			pm.registerEvents(new PlayerEntityInteractListener(), this);
 			registerFlags();
 			log.info("All ResProtect Flags added to residence.");
@@ -97,7 +89,6 @@ public class Main extends JavaPlugin {
 	}
 
 	public void registerFlags() {
-		FileConfiguration config = this.getConfig();	
 		FlagPermissions.addFlag("butcher");
 		FlagPermissions.addFlag("mayor");
 		FlagPermissions.addFlag("chat");
@@ -113,23 +104,67 @@ public class Main extends JavaPlugin {
 		FlagPermissions.addFlag("safezone");
 		FlagPermissions.addFlag("itemframe");
 
-		if (config.getBoolean("EnableMoCreaturesHooks")) {
+		if (ResProtectConfiguration.config.getBoolean("EnableMoCreaturesHooks")) {
+		    Main.getInstance().getLogger().info("- enabling MoCreatures Hooks");
 			FlagPermissions.addFlag("mo-ambient");
 			FlagPermissions.addFlag("mo-aquatic");
 			FlagPermissions.addFlag("mo-monsters");
 			FlagPermissions.addFlag("mo-passive");
 		}
 
-		if (config.getBoolean("EnableThaumcraftHooks")) {
+		if (ResProtectConfiguration.config.getBoolean("EnableThaumcraftHooks")) {
+		    Main.getInstance().getLogger().info("- enabling Thaumcraft Hooks");
 			FlagPermissions.addFlag("thaumcraft-monsters");
 		}
 
-		if (config.getBoolean("EnableTConstructHooks")) {
+		if (ResProtectConfiguration.config.getBoolean("EnableTConstructHooks")) {
+		    Main.getInstance().getLogger().info("- enabling Tinkers Construct Hooks");
 		    FlagPermissions.addFlag("tconstruct-monsters");		
 		}
 		
-		if (config.getBoolean("EnableTFHooks")) {
+		if (ResProtectConfiguration.config.getBoolean("EnableTFHooks")) {
+		    Main.getInstance().getLogger().info("- enabling Thermal Foundation Hooks");
             FlagPermissions.addFlag("tf-monsters");     
         }
 	}
+	
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!command.getName().equalsIgnoreCase("res-protect")) {
+            sender.sendMessage("[ResProtect] - missing command arguments.");
+            return false;
+        }
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("config")) {
+            if (sender instanceof Player) {
+                if (sender.hasPermission("resprotect.config")) {
+                    ResProtectConfiguration.reloadConfig();                    
+                    return true;
+                } else {
+                    sender.sendMessage("[ResProtect] - Insufficient Permissions.");
+                    return false;
+                }
+            } else {
+                ResProtectConfiguration.reloadConfig();
+                return true;
+            }
+        }
+        
+        if (args.length > 0 && args[0].equalsIgnoreCase("debug")) {
+            if (sender instanceof Player) {
+                if (sender.hasPermission("resprotect.debug")) {
+                    ResProtectConfiguration.debug = !ResProtectConfiguration.debug;
+                    sender.sendMessage("[ResProtect] - Debug Logger: " + ResProtectConfiguration.debug);
+                    return true;
+                } else {
+                    sender.sendMessage("[ResProtect] - Insufficient Permissions.");
+                    return false;
+                }
+            } else {
+                ResProtectConfiguration.reloadConfig();
+                Main.getInstance().getLogger().info("[Debug] - Logger: " + ResProtectConfiguration.debug);
+                return true;
+            }
+        }
+        return false;
+    }
 }

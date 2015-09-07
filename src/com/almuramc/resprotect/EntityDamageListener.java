@@ -26,6 +26,7 @@
  */
 package com.almuramc.resprotect;
 
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
@@ -37,84 +38,105 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 public class EntityDamageListener implements Listener {
     public Player pdamager;
-    
-    @EventHandler(priority = EventPriority.NORMAL)
-	public void onEntityDamage(EntityDamageEvent event) {
-		//System.out.println("entity Damage: " + event.getEntity());
-        if (event.isCancelled()) {
-			return;
-		}
-		
-		Entity ent = event.getEntity();
-		ClaimedResidence area = Residence.getResidenceManager().getByLoc(ent.getLocation());
-		
-		if (area != null) {
-			if (event instanceof EntityDamageByEntityEvent) {
-				EntityDamageByEntityEvent attackevent = (EntityDamageByEntityEvent) event;
-				Entity damager = attackevent.getDamager();
-				
-				@SuppressWarnings("unused")
-				ClaimedResidence srcarea = null;
-				if (damager != null) {
-					srcarea = Residence.getResidenceManager().getByLoc(damager.getLocation());
-				}
-				
-				ent = attackevent.getEntity();
 
-				if ((ent instanceof Villager && damager instanceof Player)
-						|| ((ent instanceof Villager)
-								&& damager instanceof Arrow && (((Arrow) damager)
-										.getShooter() instanceof Player))) {
-					if (damager instanceof Arrow) {
-						pdamager = (Player) ((Arrow) damager).getShooter();
-					} else {
-						pdamager = (Player) damager;
-					}
-					if (!area.getPermissions().playerHas(
-							pdamager.getName().toString(), "mayor", true)) {
-						Player attacker = null;
-						if (damager instanceof Player) {
-							attacker = (Player) damager;
-							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
-						} else {
-							if (damager instanceof Arrow)
-								attacker = (Player) ((Arrow) damager).getShooter();
-							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
-						}
-						event.setCancelled(true);
-					}
-				}
-				if ((ent instanceof Animals && damager instanceof Player)
-						|| ((ent instanceof Animals)
-								&& damager instanceof Arrow && (((Arrow) damager)
-										.getShooter() instanceof Player))) {
-					if (damager instanceof Arrow) {
-						pdamager = (Player) ((Arrow) damager).getShooter();
-					} else {
-						pdamager = (Player) damager;
-					}
-					if (!area.getPermissions().playerHas(
-							pdamager.getName().toString(), "butcher", true)) {
-						Player attacker = null;
-						if (damager instanceof Player) {
-							attacker = (Player) damager;
-							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
-						} else {
-							if (damager instanceof Arrow)
-								attacker = (Player) ((Arrow) damager)
-								.getShooter();
-							attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
-						}
-						event.setCancelled(true);
-					}
-				}
-			}
-		}
-	}
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Entity ent = event.getEntity();
+        ClaimedResidence area = Residence.getResidenceManager().getByLoc(ent.getLocation());
+        if (area != null) {
+            if (event.getCause() == DamageCause.ENTITY_EXPLOSION || event.getCause() == DamageCause.BLOCK_EXPLOSION || event.getCause() == DamageCause.FALL) {
+                if (!(event.getCause() == DamageCause.FALL)) {
+                    if (ent instanceof Player) {
+                        if (!area.getPermissions().has("pvp", true)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                }
+
+                if (ent instanceof Villager) {
+                    if (!area.getPermissions().has("mayor", true)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+
+                if (ent instanceof Animals) {
+                    if (!area.getPermissions().has("butcher", true)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
+
+        if (area != null) {
+            if (event instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent attackevent = (EntityDamageByEntityEvent) event;
+                Entity damager = attackevent.getDamager();
+
+                @SuppressWarnings("unused")
+                ClaimedResidence srcarea = null;
+                if (damager != null) {
+                    srcarea = Residence.getResidenceManager().getByLoc(damager.getLocation());
+                }
+
+                ent = attackevent.getEntity();
+
+                if ((ent instanceof Villager && damager instanceof Player) || ((ent instanceof Villager) && damager instanceof Arrow && (((Arrow) damager).getShooter() instanceof Player))) {
+                    if (damager instanceof Arrow) {
+                        pdamager = (Player) ((Arrow) damager).getShooter();
+                    } else {
+                        pdamager = (Player) damager;
+                    }
+                    if (!area.getPermissions().playerHas(
+                            pdamager.getName().toString(), "mayor", true)) {
+                        Player attacker = null;
+                        if (damager instanceof Player) {
+                            attacker = (Player) damager;
+                            attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
+                        } else {
+                            if (damager instanceof Arrow)
+                                attacker = (Player) ((Arrow) damager).getShooter();
+                            attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+                if ((ent instanceof Animals && damager instanceof Player)
+                        || ((ent instanceof Animals)
+                                && damager instanceof Arrow && (((Arrow) damager)
+                                        .getShooter() instanceof Player))) {
+                    if (damager instanceof Arrow) {
+                        pdamager = (Player) ((Arrow) damager).getShooter();
+                    } else {
+                        pdamager = (Player) damager;
+                    }
+                    if (!area.getPermissions().playerHas(
+                            pdamager.getName().toString(), "butcher", true)) {
+                        Player attacker = null;
+                        if (damager instanceof Player) {
+                            attacker = (Player) damager;
+                            attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
+                        } else {
+                            if (damager instanceof Arrow)
+                                attacker = (Player) ((Arrow) damager)
+                                .getShooter();
+                            attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");
+                        }
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+    }
 }

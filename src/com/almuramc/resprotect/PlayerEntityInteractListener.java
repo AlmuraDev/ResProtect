@@ -36,6 +36,10 @@ public class PlayerEntityInteractListener implements Listener {
         FlagPermissions perms = Residence.getPermsByLocForPlayer(ent.getLocation(), player);
 
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "itemframe", true)) {
+            if (Residence.isResAdminOn(player)) {
+                player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                return;
+            }
             event.setCancelled(true);
             event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Itemframe] residence flag permission required.");
         }
@@ -61,6 +65,10 @@ public class PlayerEntityInteractListener implements Listener {
                 FlagPermissions perms = Residence.getPermsByLocForPlayer(ent.getLocation(), player);
 
                 if (!perms.playerHas(player.getName(), player.getWorld().getName(), "itemframe", true)) {
+                    if (Residence.isResAdminOn(player)) {
+                        player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                        return;
+                    }
                     event.setCancelled(true);
                     player.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Itemframe] residence flag permission required.");
                 }

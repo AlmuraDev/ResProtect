@@ -20,6 +20,10 @@ public class PlayerInteractListener implements Listener {
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getBlock().getLocation(), event.getPlayer());
         if (perms == null) return;        
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
+            if (Residence.isResAdminOn(event.getPlayer())) {
+                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Sign] in this area because your an [ADMIN].");
+                return;
+            }
             event.setCancelled(true);
             return;
         }
@@ -44,6 +48,10 @@ public class PlayerInteractListener implements Listener {
                 if (ResProtectConfiguration.isPvpInteractBlocked(event.getPlayer().getItemInHand().getType().name().toUpperCase())) {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "pvp", true);
                     if (!hasPermission) {
+                        if (Residence.isResAdminOn(event.getPlayer())) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [PVP] in this area because your an [ADMIN].");
+                            return;
+                        }
                         event.setCancelled(true);
                         event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "PVP" + ChatColor.WHITE + "] flag permission required.");
                         if (ResProtectConfiguration.debug) {
@@ -56,6 +64,10 @@ public class PlayerInteractListener implements Listener {
                 if (ResProtectConfiguration.isBuildInteractBlocked(event.getPlayer().getItemInHand().getType().name().toUpperCase())) {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true);
                     if (!hasPermission) {
+                        if (Residence.isResAdminOn(event.getPlayer())) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                            return;
+                        }
                         event.setCancelled(true);
                         event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "BUILD" + ChatColor.WHITE + "] flag permission required.");
                         if (ResProtectConfiguration.debug) {
@@ -68,6 +80,10 @@ public class PlayerInteractListener implements Listener {
                 if (ResProtectConfiguration.isBucketInteractBlocked(event.getPlayer().getItemInHand().getType().name().toUpperCase())) {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true);
                     if (!hasPermission) {
+                        if (Residence.isResAdminOn(event.getPlayer())) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Bucket] in this area because your an [ADMIN].");
+                            return;
+                        }
                         event.setCancelled(true);
                         event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "BUCKET" + ChatColor.WHITE + "] flag permission required.");
                         if (ResProtectConfiguration.debug) {
@@ -93,6 +109,10 @@ public class PlayerInteractListener implements Listener {
             if (ResProtectConfiguration.isContainerBlockBlocked(event.getClickedBlock().getType().name().toUpperCase())) {
                 hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true);
                 if (!hasPermission) {
+                    if (Residence.isResAdminOn(event.getPlayer())) {
+                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Container] in this area because your an [ADMIN].");
+                        return;
+                    }
                     event.setCancelled(true);
                     event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "CONTAINER" + ChatColor.WHITE + "] flag permission required.");
                     if (ResProtectConfiguration.debug) {
@@ -106,6 +126,10 @@ public class PlayerInteractListener implements Listener {
             if (ResProtectConfiguration.isDoorBlockBlocked(event.getClickedBlock().getType().name().toUpperCase())) {
                 hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true);
                 if (!hasPermission) {
+                    if (Residence.isResAdminOn(event.getPlayer())) {
+                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Door] in this area because your an [ADMIN].");
+                        return;
+                    }
                     event.setCancelled(true);
                     event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "DOOR" + ChatColor.WHITE + "] flag permission required.");
                     if (ResProtectConfiguration.debug) {

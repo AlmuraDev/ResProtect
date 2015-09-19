@@ -46,7 +46,7 @@ public class ResProtectConfiguration {
     }
     
     public static boolean isBuildInteractBlocked(String item) {
-        return PVP_INTERACT_ITEMS.contains(item);
+        return BUILD_INTERACT_ITEMS.contains(item);
     }
     
     public static boolean isBucketInteractBlocked(String item) {

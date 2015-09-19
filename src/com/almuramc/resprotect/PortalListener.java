@@ -26,8 +26,6 @@
  */
 package com.almuramc.resprotect;
 
-import org.bukkit.event.entity.EntityCreatePortalEvent;
-
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

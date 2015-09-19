@@ -45,6 +45,10 @@ public class EntityListener implements Listener {
                 if (res.getPermissions().playerHas(player.getName(), "admin", true)) {
                     return;
                 }
+                if (Residence.isResAdminOn(event.getPlayer())) {
+                    event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Fly] in this area because your an [ADMIN].");
+                    return;
+                }
                 player.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Fly] residence flag permission required.");
                 player.setFlying(false);
             }

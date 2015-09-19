@@ -80,6 +80,7 @@ public class Main extends JavaPlugin {
 			pm.registerEvents(new SoilListener(), this);
 			pm.registerEvents(new InventoryListener(), this);
 			pm.registerEvents(new PlayerEntityInteractListener(), this);
+			pm.registerEvents(new BlockListener(), this);
 			registerFlags();
 			log.info("All ResProtect Flags added to residence.");
 

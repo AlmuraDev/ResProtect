@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,34 +19,36 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 public class EntityListener implements Listener {
 
-    protected Map<String, Long> lastUpdate;
-
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if (player == null) {
+        if (player == null || !player.isFlying()) { 
             return;
         }
 
-        if (!player.isFlying()) {
+        if (!Residence.getPlayerListener().moveUpdate) {
+            if (ResProtectConfiguration.debug) {
+                Main.getInstance().getLogger().warning("[Debug - EntityListener.java] - Player: " + event.getPlayer().getName() + " tried to fly but check was skipped due to check timing");        
+            }
             return;
         }
-
-        if (!Residence.getPlayerListener().moveUpdate) {           
-            return;
-        }
-
+        
+        FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
         ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
-        if (res != null) {
-
-            if (!(res.getPermissions().playerHas(player.getName(),"fly", false)) && player.isFlying()) {             
-                if (res.getPermissions().playerHas(player.getName(), "admin", true)) {
+        boolean hasPermission = false;
+        
+        if (res != null && perms != null) {
+            hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "fly", true);
+            if (!hasPermission) {
+                if (Residence.isResAdminOn(event.getPlayer())) {
+                    if (ResProtectConfiguration.debug) {
+                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                    }
                     return;
                 }
-                if (Residence.isResAdminOn(event.getPlayer())) {
-                    event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Fly] in this area because your an [ADMIN].");
-                    return;
+                if (ResProtectConfiguration.debug) {
+                    Main.getInstance().getLogger().warning("[Debug - EntityListener.java] - Player: " + event.getPlayer().getName() + " tried to fly and was denied.");        
                 }
                 player.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Fly] residence flag permission required.");
                 player.setFlying(false);
@@ -61,7 +62,13 @@ public class EntityListener implements Listener {
         if ("MinecartRideable".equalsIgnoreCase(event.getRightClicked().getType().getName())) {
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getRightClicked().getLocation());
             if (res != null) {
-                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"container", true)) {             
+                if (!res.getPermissions().playerHas(event.getPlayer().getName(),"container", true)) {
+                    if (Residence.isResAdminOn(event.getPlayer())) {
+                        if (ResProtectConfiguration.debug) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                        }
+                        return;
+                    }
                     event.setCancelled(true);
                     event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Container] residence flag permission required.");
                     return;
@@ -72,12 +79,15 @@ public class EntityListener implements Listener {
     
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityExplode(EntityExplodeEvent event) {
-        if (event.getEntity() == null)
-            return;
+        if (event.getEntity() == null) {
+            //Catch Stupid
+        }
         Boolean cancel = false;
         if (cancel) {
             event.setCancelled(true);
-            event.getEntity().remove();
+            if (event.getEntity() != null) {
+                event.getEntity().remove();
+            }
         } else {
             List<Block> preserve = new ArrayList<Block>();
             for (Block block : event.blockList()) {

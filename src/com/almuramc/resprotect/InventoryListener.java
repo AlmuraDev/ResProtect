@@ -1,7 +1,6 @@
 package com.almuramc.resprotect;
 
 import com.bekvon.bukkit.residence.Residence;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,10 +24,12 @@ public class InventoryListener implements Listener {
                 Main.getInstance().getLogger().warning("[Debug - InventoryListener.java] - Player: " + player.getName() + " tried to click: " + event.getCurrentItem().getType().name().toUpperCase());
             }
         }
-        if (ResProtectConfiguration.isBlacklisted(event.getCurrentItem().getType().name())) {            
-            Player player = (Player) event.getWhoClicked();            
+        if (ResProtectConfiguration.isBlacklisted(event.getCurrentItem().getType().name())) {
+            Player player = (Player) event.getWhoClicked();
             if (Residence.isResAdminOn(player)) {
-                player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed Item: " + event.getCurrentItem().getType().name() + " which is blacklisted because your an [ADMIN].");
+                if (ResProtectConfiguration.debug) {
+                    player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed Item: " + event.getCurrentItem().getType().name() + " which is blacklisted because your an [ADMIN].");
+                }
                 return;
             }
             if (player != null) {
@@ -37,6 +38,5 @@ public class InventoryListener implements Listener {
             }
             event.setCurrentItem(new ItemStack(0));
         }
-               
     }
 }

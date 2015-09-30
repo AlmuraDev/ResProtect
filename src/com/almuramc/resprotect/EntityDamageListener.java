@@ -26,6 +26,9 @@
  */
 package com.almuramc.resprotect;
 
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftBoat;
+import org.bukkit.entity.Vehicle;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Animals;
@@ -45,12 +48,31 @@ public class EntityDamageListener implements Listener {
     public Player pdamager;
 
     @EventHandler(priority = EventPriority.NORMAL)
+    public void onBoatBreak(VehicleDestroyEvent event) {
+        if (event.getVehicle() instanceof CraftBoat) {
+            if (event.isCancelled()) {
+                return;
+            }
+            Vehicle vehicle = event.getVehicle();
+            ClaimedResidence area = Residence.getResidenceManager().getByLoc(vehicle.getLocation());
+            if (area != null) {
+                if (area.getPermissions().has("boat", true)) {
+                    if (ResProtectConfiguration.debug) {
+                        Main.getInstance().getLogger().warning("[Debug - EntityDamageListener.java] - VehicleDestroyEvent: " + vehicle + " Blocked Destroy event with flag BOAT");
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }       
 
-        Entity ent = event.getEntity();        
+        Entity ent = event.getEntity();
         ClaimedResidence area = Residence.getResidenceManager().getByLoc(ent.getLocation());
 
         if (ResProtectConfiguration.debug) {
@@ -109,9 +131,9 @@ public class EntityDamageListener implements Listener {
                 // Specifically for IC2 MiningLaser
                 // Cannot catch the damage from player because it isn't handed off as a player.
                 boolean laser = ("IC2-MiningLaser".equalsIgnoreCase(damager.toString()));
-                if ((ent instanceof Animals && laser) || ((ent instanceof Villager && laser))) {                    
+                if ((ent instanceof Animals && laser) || ((ent instanceof Villager && laser))) {
                     if (ent instanceof Animals) {
-                        if (!area.getPermissions().has("butcher", true)) {                                                    
+                        if (!area.getPermissions().has("butcher", true)) {
                             event.setCancelled(true);
                             if (ResProtectConfiguration.debug) {
                                 Main.getInstance().getLogger().warning("[Debug - EntityDamageListener.java] - Entity: " + ent + " Damage Type: " + event.getCause() + " Blocked Animal Damager: " + damager.toString());
@@ -120,7 +142,7 @@ public class EntityDamageListener implements Listener {
                         }
                     }
                     if (ent instanceof Villager) {
-                        if (!area.getPermissions().has("mayor", true)) {                                                    
+                        if (!area.getPermissions().has("mayor", true)) {
                             event.setCancelled(true);
                             if (ResProtectConfiguration.debug) {
                                 Main.getInstance().getLogger().warning("[Debug - EntityDamageListener.java] - Entity: " + ent + " Damage Type: " + event.getCause() + " Blocked Villager Damager: " + damager.toString());
@@ -141,7 +163,9 @@ public class EntityDamageListener implements Listener {
                         if (damager instanceof Player) {
                             attacker = (Player) damager;
                             if (Residence.isResAdminOn(attacker)) {
-                                attacker.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Mayor] in this area because your an [ADMIN].");
+                                if (ResProtectConfiguration.debug) {
+                                    attacker.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Mayor] in this area because your an [ADMIN].");
+                                }
                                 return;
                             }
                             attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Mayor] residence flag permission required.");
@@ -165,7 +189,9 @@ public class EntityDamageListener implements Listener {
                         if (damager instanceof Player) {
                             attacker = (Player) damager;
                             if (Residence.isResAdminOn(attacker)) {
-                                attacker.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Butcher] in this area because your an [ADMIN].");
+                                if (ResProtectConfiguration.debug) {
+                                    attacker.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Butcher] in this area because your an [ADMIN].");
+                                }
                                 return;
                             }
                             attacker.sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [Butcher] residence flag permission required.");

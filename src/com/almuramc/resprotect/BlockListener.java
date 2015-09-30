@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 
 
 public class BlockListener implements Listener {
-    
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBlockDamage(BlockDamageEvent event) {
         Player player = event.getPlayer();      
@@ -46,10 +46,12 @@ public class BlockListener implements Listener {
         boolean hasplace = perms.playerHas(pname, player.getWorld().getName(), "destroy", true);
         if (!hasplace) {
             if (Residence.isResAdminOn(event.getPlayer())) {
-                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Destroy] in this area because your an [ADMIN].");
+                if (ResProtectConfiguration.debug) {
+                    event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Destroy] in this area because your an [ADMIN].");
+                }
                 return;
             }
-            event.setCancelled(true);            
+            event.setCancelled(true);
             if (ResProtectConfiguration.debug && event.getPlayer().getItemInHand() != null) {
                 Main.getInstance().getLogger().warning("[Debug - BlockListener.java] - BlockDamage - Player: " + event.getPlayer().getName() + " itemInHand: " + event.getPlayer().getItemInHand().getType().name().toUpperCase());
             }

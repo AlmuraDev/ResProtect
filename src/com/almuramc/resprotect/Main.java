@@ -104,6 +104,7 @@ public class Main extends JavaPlugin {
 		FlagPermissions.addFlag("soil");
 		FlagPermissions.addFlag("safezone");
 		FlagPermissions.addFlag("itemframe");
+		FlagPermissions.addFlag("boat");
 
 		if (ResProtectConfiguration.config.getBoolean("EnableMoCreaturesHooks")) {
 		    Main.getInstance().getLogger().info("- enabling MoCreatures Hooks");
@@ -138,7 +139,8 @@ public class Main extends JavaPlugin {
         if (args.length > 0 && args[0].equalsIgnoreCase("config")) {
             if (sender instanceof Player) {
                 if (sender.hasPermission("resprotect.config")) {
-                    ResProtectConfiguration.reloadConfig();                    
+                    ResProtectConfiguration.reloadConfig();
+                    sender.sendMessage("[ResProtect] - Configuration Reloaded.");
                     return true;
                 } else {
                     sender.sendMessage("[ResProtect] - Insufficient Permissions.");

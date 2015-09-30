@@ -15,13 +15,15 @@ public class PlayerInteractListener implements Listener {
     boolean debug = true;
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onSignChange(SignChangeEvent event) {        
+    public void onSignChange(SignChangeEvent event) {
         if (event.getBlock() == null) return;
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getBlock().getLocation(), event.getPlayer());
-        if (perms == null) return;        
+        if (perms == null) return;
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true)) {
             if (Residence.isResAdminOn(event.getPlayer())) {
-                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Sign] in this area because your an [ADMIN].");
+                if (ResProtectConfiguration.debug) {
+                    event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Sign] in this area because your an [ADMIN].");
+                }
                 return;
             }
             event.setCancelled(true);
@@ -49,7 +51,9 @@ public class PlayerInteractListener implements Listener {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "pvp", true);
                     if (!hasPermission) {
                         if (Residence.isResAdminOn(event.getPlayer())) {
-                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [PVP] in this area because your an [ADMIN].");
+                            if (ResProtectConfiguration.debug) {
+                                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [PVP] in this area because your an [ADMIN].");
+                            }
                             return;
                         }
                         event.setCancelled(true);
@@ -65,7 +69,9 @@ public class PlayerInteractListener implements Listener {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true);
                     if (!hasPermission) {
                         if (Residence.isResAdminOn(event.getPlayer())) {
-                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                            if (ResProtectConfiguration.debug) {
+                                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                            }
                             return;
                         }
                         event.setCancelled(true);
@@ -81,7 +87,9 @@ public class PlayerInteractListener implements Listener {
                     hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "bucket", true);
                     if (!hasPermission) {
                         if (Residence.isResAdminOn(event.getPlayer())) {
-                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Bucket] in this area because your an [ADMIN].");
+                            if (ResProtectConfiguration.debug) {
+                                event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Bucket] in this area because your an [ADMIN].");
+                            }
                             return;
                         }
                         event.setCancelled(true);
@@ -127,7 +135,9 @@ public class PlayerInteractListener implements Listener {
                 hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "door", true);
                 if (!hasPermission) {
                     if (Residence.isResAdminOn(event.getPlayer())) {
-                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Door] in this area because your an [ADMIN].");
+                        if (ResProtectConfiguration.debug) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Door] in this area because your an [ADMIN].");
+                        }
                         return;
                     }
                     event.setCancelled(true);

@@ -1,7 +1,6 @@
 package com.almuramc.resprotect;
 
 import org.bukkit.ChatColor;
-
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -21,7 +20,7 @@ public class PlayerEntityInteractListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        Player player = event.getPlayer();        
+        Player player = event.getPlayer();
         Entity ent = event.getRightClicked();
 
         if (!(ent instanceof Hanging)) {
@@ -37,7 +36,9 @@ public class PlayerEntityInteractListener implements Listener {
 
         if (!perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "itemframe", true)) {
             if (Residence.isResAdminOn(player)) {
-                player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                if (ResProtectConfiguration.debug) {
+                    player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                }
                 return;
             }
             event.setCancelled(true);
@@ -46,7 +47,7 @@ public class PlayerEntityInteractListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onEntityDamage(EntityDamageEvent event) {               
+    public void onEntityDamage(EntityDamageEvent event) {
         if (event.isCancelled()) {
             return;
         }
@@ -66,7 +67,9 @@ public class PlayerEntityInteractListener implements Listener {
 
                 if (!perms.playerHas(player.getName(), player.getWorld().getName(), "itemframe", true)) {
                     if (Residence.isResAdminOn(player)) {
-                        player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                        if (ResProtectConfiguration.debug) {
+                            player.sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed interaction of Item: [Itemframe] in this area because your an [ADMIN].");
+                        }
                         return;
                     }
                     event.setCancelled(true);

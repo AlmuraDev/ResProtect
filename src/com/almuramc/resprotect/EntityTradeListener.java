@@ -33,7 +33,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
@@ -48,7 +47,9 @@ public class EntityTradeListener implements Listener {
 			if (res != null) {
 				if(!res.getPermissions().playerHas(event.getPlayer().getName(), "npctrade", true)) {
 				    if (Residence.isResAdminOn(event.getPlayer())) {
-                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [NPCTrade] in this area because your an [ADMIN].");
+				        if (ResProtectConfiguration.debug) {
+				            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [NPCTrade] in this area because your an [ADMIN].");
+				        }
                         return;
                     }
 				    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Your action(s) have been blocked.  [NPCTrade] residence flag permission required.");

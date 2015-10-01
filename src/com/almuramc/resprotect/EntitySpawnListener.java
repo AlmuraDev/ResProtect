@@ -26,6 +26,8 @@
  */
 package com.almuramc.resprotect;
 
+import org.bukkit.entity.Blaze;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.CaveSpider;
@@ -60,7 +62,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 
@@ -84,7 +85,7 @@ public class EntitySpawnListener implements Listener {
             }
         } 
         // Vanilla Mobs
-        if(ent instanceof CaveSpider || ent instanceof Creeper || ent instanceof EnderDragon || ent instanceof Enderman || ent instanceof Ghast || ent instanceof Giant || ent instanceof MagmaCube || ent instanceof PigZombie || ent instanceof Silverfish || ent instanceof Skeleton || ent instanceof Slime || ent instanceof Spider || ent instanceof Witch || ent instanceof Wither || ent instanceof Zombie){
+        if(ent instanceof Blaze || ent instanceof CaveSpider || ent instanceof Creeper || ent instanceof EnderDragon || ent instanceof Enderman || ent instanceof Ghast || ent instanceof Giant || ent instanceof MagmaCube || ent instanceof PigZombie || ent instanceof Silverfish || ent instanceof Skeleton || ent instanceof Slime || ent instanceof Spider || ent instanceof Witch || ent instanceof Wither || ent instanceof Zombie){
             found = true;
             if(!perms.has("monsters", true)){
                 event.setCancelled(true);

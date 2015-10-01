@@ -118,7 +118,9 @@ public class PlayerInteractListener implements Listener {
                 hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "container", true);
                 if (!hasPermission) {
                     if (Residence.isResAdminOn(event.getPlayer())) {
-                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Container] in this area because your an [ADMIN].");
+                        if (ResProtectConfiguration.debug) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Container] in this area because your an [ADMIN].");
+                        }
                         return;
                     }
                     event.setCancelled(true);

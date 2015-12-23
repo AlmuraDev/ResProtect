@@ -22,7 +22,29 @@ public class PlayerEntityInteractListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
         Entity ent = event.getRightClicked();
-
+        // Item In-Hand Interact Check
+        if (event.getPlayer().getItemInHand() != null) {
+            FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
+            boolean hasPermission = false;
+            if (ResProtectConfiguration.isBuildInteractBlocked(event.getPlayer().getItemInHand().getType().name().toUpperCase())) {
+                hasPermission = perms.playerHas(event.getPlayer().getName(), event.getPlayer().getWorld().getName(), "build", true);
+                if (!hasPermission) {
+                    if (Residence.isResAdminOn(event.getPlayer())) {
+                        if (ResProtectConfiguration.debug) {
+                            event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed [Build] in this area because your an [ADMIN].");
+                        }
+                        return;
+                    }
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + " - Action blocked.  [" + ChatColor.GREEN + "BUILD" + ChatColor.WHITE + "] flag permission required.");
+                    if (ResProtectConfiguration.debug) {
+                        Main.getInstance().getLogger().warning("[Debug - PlayerInteractListener.java] - Player: " + event.getPlayer().getName() + " EntityInteract via BUILD itemInHand: " + event.getPlayer().getItemInHand().getType().name().toUpperCase());
+                    }
+                    return;
+                }
+            }
+        }
+        
         if (!(ent instanceof Hanging)) {
             return;
         }

@@ -34,6 +34,11 @@ public class EntityListener implements Listener {
             return;
         }
         
+        if (player.getWorld().getName().equalsIgnoreCase("DIM1") && !player.hasPermission("guardian.title")) {
+            player.sendMessage("[" + ChatColor.DARK_AQUA + "Mother says..." + ChatColor.WHITE + " - Hi los ni vos wah bo het...");
+            player.setFlying(false);
+        }
+        
         FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
         ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
         boolean hasPermission = false;

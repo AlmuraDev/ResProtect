@@ -45,6 +45,12 @@ public class PlayerInteractListener implements Listener {
             FlagPermissions perms = Residence.getPermsByLocForPlayer(event.getPlayer().getLocation(), event.getPlayer());
             ClaimedResidence res = Residence.getResidenceManager().getByLoc(event.getPlayer().getLocation());
             boolean hasPermission = false;
+            
+            if ("IC2_ITEMTOOLMININGLASER".equalsIgnoreCase(event.getPlayer().getItemInHand().getType().name()) && res == null) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + "] - Action blocked.  Cannot use Mining Laser outside of a residence.");
+                return;
+            }                
 
             if (res != null && perms != null) {
                 if (ResProtectConfiguration.isPvpInteractBlocked(event.getPlayer().getItemInHand().getType().name().toUpperCase())) {

@@ -26,39 +26,50 @@
  */
 package com.almuramc.resprotect;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftBoat;
-import org.bukkit.entity.Vehicle;
-import org.bukkit.event.vehicle.VehicleDestroyEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import com.bekvon.bukkit.residence.Residence;
-import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.vehicle.VehicleDestroyEvent;
 
 public class EntityDamageListener implements Listener {
     public Player pdamager;
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onBoatBreak(VehicleDestroyEvent event) {
-        if (event.getVehicle() instanceof CraftBoat) {
-            if (event.isCancelled()) {
-                return;
-            }
-            Vehicle vehicle = event.getVehicle();
-            ClaimedResidence area = Residence.getResidenceManager().getByLoc(vehicle.getLocation());
+        if (event.isCancelled()) {
+            return;
+        }
+        Vehicle vehicle = event.getVehicle();
+        ClaimedResidence area = Residence.getResidenceManager().getByLoc(vehicle.getLocation());
+        if (vehicle instanceof Boat) {
             if (area != null) {
                 if (area.getPermissions().has("boat", true)) {
                     if (ResProtectConfiguration.debug) {
                         Main.getInstance().getLogger().warning("[Debug - EntityDamageListener.java] - VehicleDestroyEvent: " + vehicle + " Blocked Destroy event with flag BOAT");
+                    }
+                    event.setCancelled(true);
+                }
+            }
+        }
+        if (vehicle instanceof Minecart) {
+            if (area != null) {
+                if (area.getPermissions().has("minecart", true)) {
+                    if (ResProtectConfiguration.debug) {
+                        Main.getInstance().getLogger().warning("[Debug - EntityDamageListener.java] - VehicleDestroyEvent: " + vehicle + " Blocked Destroy event with flag MINECART");
                     }
                     event.setCancelled(true);
                 }

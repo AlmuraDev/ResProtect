@@ -47,6 +47,12 @@ public class PlayerInteractListener implements Listener {
             boolean hasPermission = false;
             
             if ("IC2_ITEMTOOLMININGLASER".equalsIgnoreCase(event.getPlayer().getItemInHand().getType().name()) && res == null) {
+                if (Residence.isResAdminOn(event.getPlayer())) {
+                    if (ResProtectConfiguration.debug) {
+                        event.getPlayer().sendMessage("[" + ChatColor.LIGHT_PURPLE + "ResProtect" + ChatColor.WHITE + "] - Allowed Mining Laser in this area because your an [ADMIN].");
+                    }
+                    return;
+                }
                 event.setCancelled(true);
                 event.getPlayer().sendMessage("[" + ChatColor.DARK_AQUA + "ResProtect" + ChatColor.WHITE + "] - Action blocked.  Cannot use Mining Laser outside of a residence.");
                 return;

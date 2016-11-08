@@ -81,6 +81,8 @@ public class Main extends JavaPlugin {
 			pm.registerEvents(new InventoryListener(), this);
 			pm.registerEvents(new PlayerEntityInteractListener(), this);
 			pm.registerEvents(new BlockListener(), this);
+			pm.registerEvents(new ResidenceTPListener(), this);
+			pm.registerEvents(new ResidenceCreateListener(), this);
 			registerFlags();
 			log.info("All ResProtect Flags added to residence.");
 
@@ -169,5 +171,5 @@ public class Main extends JavaPlugin {
             }
         }
         return false;
-    }
+    }	
 }

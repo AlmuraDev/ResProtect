@@ -148,6 +148,7 @@ public class EntitySpawnListener implements Listener {
                     found = true;
                     if(!perms.has("thaumcraft-monsters", true)) {
                         event.setCancelled(true);
+                        return;
                     }
                 }
             }
@@ -158,6 +159,7 @@ public class EntitySpawnListener implements Listener {
                     found = true;
                     if(!perms.has("tconstruct-monsters", true)) {
                         event.setCancelled(true);
+                        return;
                     }
                 }
             }
@@ -168,6 +170,7 @@ public class EntitySpawnListener implements Listener {
                     found = true;
                     if(!perms.has("tf-monsters", true)) {
                         event.setCancelled(true);
+                        return;
                     }
                 }
             }

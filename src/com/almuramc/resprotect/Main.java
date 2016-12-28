@@ -26,16 +26,15 @@
  */
 package com.almuramc.resprotect;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.bekvon.bukkit.residence.protection.FlagPermissions;
+
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 	private static Main instance;
@@ -107,6 +106,7 @@ public class Main extends JavaPlugin {
 		FlagPermissions.addFlag("safezone");
 		FlagPermissions.addFlag("itemframe");
 		FlagPermissions.addFlag("boat");
+		FlagPermissions.addFlag("minecart");
 
 		if (ResProtectConfiguration.config.getBoolean("EnableMoCreaturesHooks")) {
 		    Main.getInstance().getLogger().info("- enabling MoCreatures Hooks");
